@@ -4,7 +4,7 @@ library(shiny)
 library(dplyr)
 library(plotly)
 library(ggplot2)
-election <- read.csv('data/presidential_general_election_2016.csv', stringsAsFactors = FALSE)
+election <- read.csv('../data/presidential_general_election_2016.csv', stringsAsFactors = FALSE)
   
   choice <- group_by(election, state) %>% 
     filter(rank == 1) %>% 

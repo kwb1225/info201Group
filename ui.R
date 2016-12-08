@@ -12,11 +12,13 @@ library(stringr)
 
 #votes_counties <- read.csv("data/presidential_general_election_2016_by_county.csv", stringsAsFactors = FALSE)
 
-source("../tab2working/datafunction.r")
-source("../tab2working/tab1script.r")
+source("./tab2working/tab2script.r")
+source("./tab1/tab1script.r")
+source("./tab3/tab3script.r")
 
 shinyUI(navbarPage(inverse = TRUE, 'Presidential Election 2016',
                    #Panel Page
+                  
                    tabPanel('Overview',
                             titlePanel("General Overview of the 2016 Presidential Election"),
                             
@@ -37,6 +39,38 @@ shinyUI(navbarPage(inverse = TRUE, 'Presidential Election 2016',
                                 dataTableOutput('table')
                               )
                             )
+                    ),
+                   tabPanel('Changing the Results',
+                            titlePanel("What if some states had different outcomes on the 2016 election?
+             (Please don't select a state more than once)"),
+                            
+                            
+                            # Sidebar with selectInputs with state names to change outputs in the election
+                            sidebarLayout(
+                              sidebarPanel(
+                                selectInput(inputId = "state", label = "Choose a state to change", c("None", choice$state ), selected = "None"),
+                                selectInput(inputId = "state1", label = "Choose another state to change", c("None", choice$state ), selected = "None"),
+                                selectInput(inputId = "state2", label = "Choose a state to change", c("None", choice$state ), selected = "None"),
+                                selectInput(inputId = "state3", label = "Choose another state to change", c("None", choice$state ), selected = "None"),
+                                selectInput(inputId = "state4", label = "Choose another state to change", c("None", choice$state ), selected = "None"),
+                                #Checkboxes to change the graph showcased in plot 2 and 3
+                                checkboxInput(inputId = "show", label = "Display the election results for the selected states (check only if you have changed a state already)"),
+                                checkboxInput(inputId = "show1", label = "Display electoral votes per state instead"),
+                                
+                                width = 4
+                              ),
+                              
+                              
+                              
+                              # Show a plot of the generated distribution
+                              mainPanel(
+                                plotlyOutput("pie"),
+                                plotlyOutput("thirdandresults"),
+                                plotlyOutput("perstate")
+                                
+                              )
+                            )
+                            
                     ),
                    
                    tabPanel('Predicting Election',
@@ -65,7 +99,7 @@ shinyUI(navbarPage(inverse = TRUE, 'Presidential Election 2016',
                               )
                             )
                    ),
-                   tabPanel('Bar',
+                   tabPanel('More Information',
                             # Add a titlePanel to your tab
                             titlePanel("2016 State Governor and Senator Election"),
                             

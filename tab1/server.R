@@ -10,8 +10,7 @@ shinyServer(function(input, output) {
   output$map <- renderPlot({
   
     # Reads in the data into a .csv
-    setwd("/Users/David/Documents/INFO201/info201Group")
-    presidential.county.data <- read.csv("data/presidential_general_election_2016_by_county_David.csv")
+    presidential.county.data <- read.csv("../data/presidential_general_election_2016_by_county_David.csv")
 
     # Creates a vector of the two candidates
     candidates <- c("H. Clinton", "D. Trump")
