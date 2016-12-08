@@ -11,29 +11,32 @@ library(stringr)
 
 #votes_counties <- read.csv("data/presidential_general_election_2016_by_county.csv", stringsAsFactors = FALSE)
 
-source("../tabworking/datafunction.r")
+source("../tab2working/datafunction.r")
 
 shinyUI(navbarPage('Presidential Election 2016',
                    #Panel Page
                    tabPanel('Predicting Election',
                             #Title page
-                            titlePanel('What Could Change the Election Result'),
+                            titlePanel('Mapping a Change in the Results'),
                             sidebarLayout(
                               #sidebars
                               sidebarPanel(
                                 #Dropdown Menu
                                 selectInput('state', label = 'Choose a State', choices = as.list(states_name_location$region), selected = "normal"),
                                
+                                #Interactive UI Output
+                                uiOutput("select1"),
+                                
                                 #Button Menu
-                                radioButtons('candidate', label = 'Choose a Candidate', choices = list('H. Clinton' = "H. Clinton", 'D. Trump' = "D. Trump", 'Default' = "normal"), selected = "normal")
+                                radioButtons('candidate', label = 'Who should Win?', choices = list('H. Clinton' = "H. Clinton", 'D. Trump' = "D. Trump", 'Default' = "normal"), selected = "normal")
                                 
                               ),
                               
-                              #Exporting the input value
+                              #Exporting the input value in tabs
                               mainPanel(
                                 tabsetPanel(type = "tabs",
-                                            tabPanel("Map", plotOutput("map")),
-                                            tabPanel("Histogram", plotlyOutput("chart"))
+                                            tabPanel("Distribution Map by Counties", plotOutput("map")),
+                                            tabPanel("Popular Votes Histogram", plotlyOutput("chart"))
                                 )
                               )
                             )
