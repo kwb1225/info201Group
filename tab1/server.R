@@ -3,6 +3,7 @@ library(dplyr)
 library(choroplethr)
 library(choroplethrMaps)
 library(ggplot2)
+library(reshape2)
 
 shinyServer(function(input, output) {
   
@@ -11,9 +12,6 @@ shinyServer(function(input, output) {
     # Reads in the data into a .csv
     setwd("/Users/David/Documents/INFO201/info201Group")
     presidential.county.data <- read.csv("data/presidential_general_election_2016_by_county_David.csv")
-    
-    # Creates a sub-list of National, and sub-list of States into one list of choices
-    all.choices <- list("National" = "national", States = unique(percentages$state))
 
     # Creates a vector of the two candidates
     candidates <- c("H. Clinton", "D. Trump")
@@ -21,6 +19,9 @@ shinyServer(function(input, output) {
     # Creates a new dataframe of the filtere
     main.candidates <- presidential.county.data %>% 
       filter(name %in% candidates)
+    
+    # Creates a sub-list of National, and sub-list of States into one list of choices
+    all.choices <- list("National" = "national", States = unique(main.candidates$state))
     
     # Condenses the data to get rid of duplicates
     main.candidates.condensed <- dcast(main.candidates, fips + geo_name + state ~ name, sum)
