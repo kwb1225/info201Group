@@ -9,9 +9,9 @@ library(ggplot2)
 library(ggmap)
 
 #Loading Data Sets
-counties_rds <- readRDS("../data/counties.rds")
-votes_states <- read.csv("../data/presidential_general_election_2016.csv", stringsAsFactors = FALSE)
-votes_counties <- read.csv("../data/presidential_general_election_2016_by_county.csv", stringsAsFactors = FALSE)
+counties_rds <- readRDS("./data/counties.rds")
+votes_states <- read.csv("./data/presidential_general_election_2016.csv", stringsAsFactors = FALSE)
+votes_counties <- read.csv("./data/presidential_general_election_2016_by_county_David.csv", stringsAsFactors = FALSE)
 
 #Importing Map Data
 counties_test <- map_data("county")
