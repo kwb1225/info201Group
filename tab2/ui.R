@@ -6,13 +6,40 @@ library(mapproj)
 library(stringr)
 
 
-#counties_rds <- readRDS("data/counties.rds")
+counties_rds <- readRDS("../data/counties.rds")
+votes_states <- read.csv("../data/presidential_general_election_2016.csv", stringsAsFactors = FALSE)
+votes_counties <- read.csv("../data/presidential_general_election_2016_by_county_David.csv", stringsAsFactors = FALSE)
 
-#votes_states <- read.csv("data/presidential_general_election_2016.csv", stringsAsFactors = FALSE)
+#Importing Map Data
+counties_test <- map_data("county")
+states_test <- map_data("state")  
 
-#votes_counties <- read.csv("data/presidential_general_election_2016_by_county.csv", stringsAsFactors = FALSE)
+#Modifying Votes Into Hillary and Trump
+modified_votes <- votes_counties %>%
+  filter(rank == "1") %>%
+  select(geo_name, name, rank, vote_pct, votes, state)
 
-source("../tab2working/tab2script.r")
+modified_votes$state <- tolower(modified_votes$state)
+
+subregion <- tolower(modified_votes$geo_name) %>%
+  str_replace_all(" county", "")
+
+modified_votes <- modified_votes %>%
+  mutate(subregion = subregion)
+
+#Merging the Votes Data and Map Data
+counties_test_new <- inner_join(counties_test, modified_votes, by = "subregion")
+
+#Naming the Locations
+states_name_location <- aggregate(cbind(long, lat) ~ region, data = counties_test_new, FUN = function(x) mean(range(x)))
+states_name_location <- as.data.frame(states_name_location)  
+
+counties_name_location <- aggregate(cbind(long, lat) ~subregion, data = counties_test_new, FUN = function(x) mean(range(x)))
+counties_name_location <- as.data.frame(counties_name_location)
+
+
+#Function for Map Generation
+
 
 shinyUI(navbarPage(inverse = TRUE, 'Presidential Election 2016',
                    #Panel Page
@@ -25,7 +52,7 @@ shinyUI(navbarPage(inverse = TRUE, 'Presidential Election 2016',
                               sidebarPanel(
                                 #Dropdown Menu
                                 selectInput('state', label = 'Choose a State', choices = as.list(states_name_location$region), selected = "normal"),
-                                
+                               
                                 #Interactive UI Output
                                 uiOutput("select1"),
                                 
@@ -46,5 +73,5 @@ shinyUI(navbarPage(inverse = TRUE, 'Presidential Election 2016',
                             )
                    )
                    
-                   
+                  
 ))
