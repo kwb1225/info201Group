@@ -116,11 +116,12 @@ shinyServer(function(input, output) {
       
       #Gets string values transmitted by input and set them in a dataframe
       plotchange <- as.data.frame(c(input$state, input$state1, input$state2, input$state3, input$state4))
+      colnames(plotchange) <- 'state'
       
       
       #Embodies reactive data from "plotchange" into dataframe containing winner candidates from each state,
       #and defines the dataframe for the plotly function to use to render a new graph
-      colnames(plotchange) <- 'state'
+     # colnames(plotchange) <- 'state'
       plotchange$selected <- 2 #selected states in input will have 2 as value for this colum
       change <- full_join(winner, plotchange, by = "state")
       change[is.na(change)] <- 0 #unchanged states (unselected in input) will have 0 as value for this colum
