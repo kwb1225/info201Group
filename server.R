@@ -1,6 +1,4 @@
 library(shiny)
-library(choroplethr)
-library(choroplethrMaps)
 library(ggplot2)
 library(reshape2)
 library(plotly)
@@ -8,11 +6,15 @@ library(maps)
 library(mapproj)
 library(stringr)
 library(ggmap)
+library(tidyr)
 library(dplyr)
+
 
 shinyServer(function(input, output) {
   
   output$map <- renderPlot({
+    library(choroplethrMaps)
+    library(choroplethr)
     
     # Reads in the data into a .csv
     presidential.county.data <- read.csv("data/presidential_general_election_2016_by_county_David.csv")
@@ -113,10 +115,15 @@ shinyServer(function(input, output) {
     #Embodies reactive variables and creates a pie chart with the correspondent electoral vote percentage
     #per candidate
     output$pie <- renderPlotly({
+      detach("package:plotly", unload=TRUE)
+      detach("package:dplyr", unload=TRUE)
+      library(plotly)
+      library(tidyr)
+      library(dplyr)
+
       
       #Gets string values transmitted by input and set them in a dataframe
       plotchange <- as.data.frame(c(input$state, input$state1, input$state2, input$state3, input$state4))
-
       
       #Embodies reactive data from "plotchange" into dataframe containing winner candidates from each state,
       #and defines the dataframe for the plotly function to use to render a new graph
@@ -162,6 +169,12 @@ shinyServer(function(input, output) {
     })
 
     output$perstate <- renderPlotly({
+      detach("package:plotly", unload=TRUE)
+      detach("package:dplyr", unload=TRUE)
+      library(plotly)
+      library(tidyr)
+      library(dplyr)
+      
       #if checkbox 2 is selected, a graph with the percentage of Electoral Votes per state will be plotted
       if(input$show1){
         
@@ -212,6 +225,12 @@ shinyServer(function(input, output) {
     
     #Output refering to the third party votes graph, and results per selected state graph
     output$thirdandresults <- renderPlotly({
+      detach("package:plotly", unload=TRUE)
+      detach("package:dplyr", unload=TRUE)
+      library(plotly)
+      library(tidyr)
+      library(dplyr)
+      
       ranks <- c(1, 2)
       #If checkbox 1 is selected, plot a graph with the results per selected state in selectInput 1 through 5
       if(input$show) {
@@ -413,6 +432,11 @@ shinyServer(function(input, output) {
       })
       
       output$chart <- renderPlotly({
+        detach("package:plotly", unload=TRUE)
+        detach("package:dplyr", unload=TRUE)
+        library(plotly)
+        library(dplyr)
+        
         return(election_chart(input$location, input$county, input$candidate))
       })
     

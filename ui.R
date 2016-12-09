@@ -5,6 +5,19 @@ library(mapproj)
 library(stringr)
 library(dplyr)
 
+presidential.county.data <- read.csv("data/presidential_general_election_2016_by_county_David.csv")
+
+# Creates a vector of the two candidates
+candidates <- c("H. Clinton", "D. Trump")
+
+# Creates a new dataframe of the filtere
+main.candidates <- presidential.county.data %>% 
+  filter(name %in% candidates)
+
+# Creates a sub-list of National, and sub-list of States into one list of choices
+all.choices <- list("National" = "national", States = unique(main.candidates$state))
+
+########################
 
 election <- read.csv('data/presidential_general_election_2016.csv', stringsAsFactors = FALSE)
 election <- select(election, electoral_votes, rank, name, state, votes, vote_pct) %>% 
