@@ -17,7 +17,7 @@ shinyUI(navbarPage('2016 State Governor & Senator Election',
                                 selectInput('election', label = 'Governor or Senator', choices = list("Governor" = "Governor", "Senator" = "Senator")),
                               
                                 "Choose either Governor or Senator to see each election's result.",
-                                br(), 
+                                br(), br(),
                                 "Showing only states which voted for the positions"
                               ),
                               # Create a main panel, in which you should display your plotly bar plot
