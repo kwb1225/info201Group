@@ -5,35 +5,19 @@ library(dplyr)
 library(plotly)
 library(ggplot2)
 
-<<<<<<< 009f71749b93b8177a61b766c806727effa1937a
 
-=======
-<<<<<<< dc5273f238dadaf83307dcabe99c5d19307d8eb6
-election <- read.csv('data/presidential_general_election_2016.csv', stringsAsFactors = FALSE)
+election <- read.csv('../data/presidential_general_election_2016.csv', stringsAsFactors = FALSE)
 election <- select(election, electoral_votes, rank, name, state, votes, vote_pct) %>% 
   filter(electoral_votes != 107) %>% 
   arrange(state)
-=======
-# Define UI for application 
-shinyUI(fluidPage(
-  
-  
-  election <- read.csv('../data/presidential_general_election_2016.csv', stringsAsFactors = FALSE),
->>>>>>> Finished Tab 1
-  
+
   choice <- group_by(election, state) %>% 
     filter(rank == 1) %>% 
     select(name, electoral_votes) %>% 
-<<<<<<< dc5273f238dadaf83307dcabe99c5d19307d8eb6
-    mutate(selected = 1) 
->>>>>>> Finished Tab 1
-  
+    mutate(selected = 1)
+
 # Define UI for application 
 shinyUI(fluidPage(
-  
-=======
-    mutate(selected = 1),
->>>>>>> Finished Tab 1
   
   tabPanel("Tab 3", 
   # Application title
@@ -72,4 +56,4 @@ shinyUI(fluidPage(
        
     )
   )
-))
+)))
