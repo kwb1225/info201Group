@@ -81,7 +81,7 @@ shinyServer(function(input, output) {
     }
      
     # If checkbox is marked, show dataframe
-    if (input$df.show == TRUE) {
+    if (input$df.show) {
       output$table <- renderDataTable(editedDF)
     }
      
