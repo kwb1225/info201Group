@@ -1,5 +1,4 @@
 library(shiny)
-library(dplyr)
 library(choroplethr)
 library(choroplethrMaps)
 library(ggplot2)
@@ -9,6 +8,7 @@ library(maps)
 library(mapproj)
 library(stringr)
 library(ggmap)
+library(dplyr)
 
 shinyServer(function(input, output) {
   
@@ -94,11 +94,6 @@ shinyServer(function(input, output) {
     return(curr.map)
   })
     ##################################################
-
-  
-  
-    ##########################
-  
   
     #Reads data from the 2016 general presidential election into a dataframe
     election <- read.csv('data/presidential_general_election_2016.csv', stringsAsFactors = FALSE)
@@ -410,15 +405,15 @@ shinyServer(function(input, output) {
     }
     
       output$select1 = renderUI({
-        selectInput("county", "Choose Counties", choices = c("all", as.list(modified_votes[grepl(input$state, modified_votes$state), as.integer(7)])))
+        selectInput("county", "Choose Counties", choices = c("all", as.list(modified_votes[grepl(input$location, modified_votes$state), as.integer(7)])))
       })
       
       output$map1 <- renderPlot({
-        return(election_map(input$state, input$county, input$candidate))
+        return(election_map(input$location, input$county, input$candidate))
       })
       
       output$chart <- renderPlotly({
-        return(election_chart(input$state, input$county, input$candidate))
+        return(election_chart(input$location, input$county, input$candidate))
       })
     
 })

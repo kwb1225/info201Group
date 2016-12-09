@@ -1,9 +1,10 @@
 library(shiny)
-library(dplyr)
 library(plotly)
 library(maps)
 library(mapproj)
 library(stringr)
+library(dplyr)
+
 
 election <- read.csv('data/presidential_general_election_2016.csv', stringsAsFactors = FALSE)
 election <- select(election, electoral_votes, rank, name, state, votes, vote_pct) %>% 
@@ -176,7 +177,7 @@ shinyUI(navbarPage("Presidential Election 2016", inverse = TRUE,
              #sidebars
              sidebarPanel(
                #Dropdown Menu
-               selectInput('state', label = 'Choose a State', choices = as.list(states_name_location$region), selected = "normal"),
+               selectInput('location', label = 'Choose a State', choices = as.list(states_name_location$region), selected = "normal"),
                
                #Interactive UI Output
                uiOutput("select1"),
