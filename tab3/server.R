@@ -9,14 +9,22 @@ library(tidyr)
 shinyServer(function(input, output) {
    
    #Reads data from the 2016 general presidential election into a dataframe
-   election <- read.csv('../data/presidential_general_election_2016.csv', stringsAsFactors = FALSE)
-    
+   election <- read.csv('data/presidential_general_election_2016.csv', stringsAsFactors = FALSE)
+    election <- select(election, electoral_votes, rank, name, state, votes, vote_pct) %>% 
+   filter(electoral_votes != 107) %>% 
+      arrange(state)
     #Creates dataframe "winner" by filtering only the winners of the election in each state,
     #selects the colums related to the winning candidate name and electoral votes for the given
     #state
     winner <- group_by(election, state) %>% 
       filter(rank == 1) %>% 
-      select(name, electoral_votes) 
+      select(name, electoral_votes) %>% 
+      arrange(state)
+    
+   
+      
+      
+                
    
 
   #Embodies reactive variables and creates a pie chart with the correspondent electoral vote percentage
@@ -39,11 +47,12 @@ shinyServer(function(input, output) {
     colnames(difference) <- 'alternate'
     difference$state <- change$state
     final <- full_join(change, difference, by = "state")
-    final <- filter(final, alternate != 0)
+    final <- filter(final, alternate != 0) %>% 
+      arrange(state)
     percandidate <- group_by(final, alternate) %>% 
       summarise(sum = sum(electoral_votes))
     
-    colors <- c('red', 'blue')
+    colors <- c(toRGB('firebrick2'), 'blue')
     
      # Plots a graph taking in consideration the aggregate electoral votes per candidate at the
      #dataframe containing inputed changes
@@ -57,7 +66,7 @@ shinyServer(function(input, output) {
                           line = list(color = '#FFFFFF', width = 1)),
             #The 'pull' attribute can also be used to create space between the sectors
             showlegend = TRUE) %>%
-       layout(title = 'Trump x Clinton (Electoral Votes after change)',
+       layout(title = '(Fig.1) Trump x Clinton (Electoral Votes after change)',
               xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
               yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
      
@@ -85,7 +94,7 @@ shinyServer(function(input, output) {
                             line = list(color = '#FFFFFF', width = 1)),
            
               showlegend = TRUE) %>% 
-        layout(title = 'Electoral Votes per State',
+        layout(title = '(Fig.3) Electoral Votes per State',
                xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
                yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
       
@@ -107,7 +116,7 @@ shinyServer(function(input, output) {
                             line = list(color = '#FFFFFF', width = 1)),
               
               showlegend = TRUE) %>%
-        layout(title = 'Popular Votes per State',
+        layout(title = '(Fig.3) Popular Votes per State',
                xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
                yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
       
@@ -132,12 +141,13 @@ shinyServer(function(input, output) {
       filter(state %in% estados, rank %in% ranks) 
     winners <- group_by(winners, state)
     winners <- select(winners, state, name, vote_pct)
+    
     test <- spread(winners, name, vote_pct)
     colnames(test)[2] <- 'Trump'
     colnames(test)[3] <- 'Clinton'
     plot_ly(test, x = ~state, y = ~Trump, type = 'bar', name = 'Trump') %>%
       add_trace(y = ~Clinton, name = 'Clinton') %>%
-      layout(yaxis = list(title = 'Votes'), barmode = 'stack', height = 320, title = 'Votes in the 2016 Presidential Election per selected state')
+      layout(yaxis = list(title = 'Votes'), barmode = 'stack', height = 320, title = '(Fig.2) Votes in the 2016 Presidential Election per selected state')
     
     #If the checkbox 1 isn't selected, plot a graph with the percentage of votes for third party candidates for all states
     } else {
@@ -163,7 +173,7 @@ shinyServer(function(input, output) {
                             line = list(color = '#FFFFFF', width = 1)),
               
               showlegend = TRUE) %>%
-        layout(title = 'Third Party Votes per State (Percentage within the nation)',
+        layout(title = '(Fig.2) Third Party Votes per State (Percentage within the nation)',
                xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
                yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
       

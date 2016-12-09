@@ -4,12 +4,17 @@ library(shiny)
 library(dplyr)
 library(plotly)
 library(ggplot2)
-election <- read.csv('../data/presidential_general_election_2016.csv', stringsAsFactors = FALSE)
+
+election <- read.csv('data/presidential_general_election_2016.csv', stringsAsFactors = FALSE)
+election <- select(election, electoral_votes, rank, name, state, votes, vote_pct) %>% 
+  filter(electoral_votes != 107) %>% 
+  arrange(state)
   
   choice <- group_by(election, state) %>% 
     filter(rank == 1) %>% 
     select(name, electoral_votes) %>% 
-    mutate(selected = 1)
+    mutate(selected = 1) 
+  
 # Define UI for application 
 shinyUI(fluidPage(
   
@@ -22,13 +27,19 @@ shinyUI(fluidPage(
   # Sidebar with selectInputs with state names to change outputs in the election
   sidebarLayout(
     sidebarPanel(
+       "As you select a state, its electoral votes will go to the runner-up candidate in it.",
+       "For example, if you select California, the pie chart (Fig.1) will change, transfering the 55 electoral vote of California from Clinton to Trump",
        selectInput(inputId = "state", label = "Choose a state to change", c("None", choice$state ), selected = "None"),
        selectInput(inputId = "state1", label = "Choose another state to change", c("None", choice$state ), selected = "None"),
        selectInput(inputId = "state2", label = "Choose a state to change", c("None", choice$state ), selected = "None"),
        selectInput(inputId = "state3", label = "Choose another state to change", c("None", choice$state ), selected = "None"),
        selectInput(inputId = "state4", label = "Choose another state to change", c("None", choice$state ), selected = "None"),
        #Checkboxes to change the graph showcased in plot 2 and 3
+       " ",
+       "(Fig.2)",
        checkboxInput(inputId = "show", label = "Display the election results for the selected states (check only if you have changed a state already)"),
+       " ",
+       "(Fig.3)",
        checkboxInput(inputId = "show1", label = "Display electoral votes per state instead"),
        
        width = 4
