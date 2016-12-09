@@ -14,15 +14,15 @@ shinyUI(navbarPage('2016 State Governor & Senator Election',
                               sidebarPanel(
                                 
                                 # Make a selectInput widget for user to choose between Governor and Senator election.
-                                selectInput('election', label = 'Governor or Senator', choices = list("Governor" = "Governor", "Senator" = "Senator"))
-                                
-
-                              ),
+                                selectInput('election', label = 'Governor or Senator', choices = list("Governor" = "Governor", "Senator" = "Senator")),
                               
+                                "Choose either Governor or Senator to see each election's result.",
+                                br(), 
+                                "Showing only states which voted for the positions"
+                              ),
                               # Create a main panel, in which you should display your plotly bar plot
                               mainPanel(
                                 plotlyOutput('bar')
-                                
                               )
                             )
                    )
