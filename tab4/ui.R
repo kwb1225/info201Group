@@ -3,7 +3,7 @@ library(plotly)
 shinyUI(navbarPage('2016 State Governor & Senator Election',
                    
                    # Create a tabPanel to show your bar plot
-                   tabPanel('Bar',
+                   tabPanel('2016 State Governor & Senator Election',
                             # Add a titlePanel to your tab
                             titlePanel("2016 State Governor and Senator Election"),
                             
@@ -17,7 +17,7 @@ shinyUI(navbarPage('2016 State Governor & Senator Election',
                                 selectInput('election', label = 'Governor or Senator', choices = list("Governor" = "Governor", "Senator" = "Senator")),
                               
                                 "Choose either Governor or Senator to see each election's result.",
-                                br(), 
+                                br(), br(),
                                 "Showing only states which voted for the positions"
                               ),
                               # Create a main panel, in which you should display your plotly bar plot

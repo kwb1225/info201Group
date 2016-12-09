@@ -5,20 +5,21 @@ library(dplyr)
 library(plotly)
 library(ggplot2)
 
-election <- read.csv('data/presidential_general_election_2016.csv', stringsAsFactors = FALSE)
+
+election <- read.csv('../data/presidential_general_election_2016.csv', stringsAsFactors = FALSE)
 election <- select(election, electoral_votes, rank, name, state, votes, vote_pct) %>% 
   filter(electoral_votes != 107) %>% 
   arrange(state)
-  
+
   choice <- group_by(election, state) %>% 
     filter(rank == 1) %>% 
     select(name, electoral_votes) %>% 
-    mutate(selected = 1) 
-  
+    mutate(selected = 1)
+
 # Define UI for application 
 shinyUI(fluidPage(
   
-  
+  tabPanel("Tab 3", 
   # Application title
   titlePanel("What if some states had different outcomes on the 2016 election?
              (Please don't select a state more than once)"),
@@ -55,4 +56,4 @@ shinyUI(fluidPage(
        
     )
   )
-))
+)))
